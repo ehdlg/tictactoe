@@ -1,21 +1,28 @@
-function Tablero(){
-    const filas = 3;
-    const columnas = 3;
-    const tablero = [];
+const gameBoard = (() => {
+    
+    const length = 9;
+    const board = [];
 
-    for(let i = 0; i < filas; i++){
-        tablero[i] = [];
-        for(let j = 0; j < columnas; j++){
-            tablero[i][j] = '';
-        }
+    for(let i = 0; i < length; i++){
+       board[i] = '';
     }
 
-    const getTablero = function() {
-        return tablero;
-    }
-    return {getTablero};
-}
+    const getBoard = () => board;
+    const setMark = (player,index) => board[index] = player.getMark();
+    
+    return {getBoard, setMark};
+})();
 
-const tablero = Tablero();
+const Player = (playerMark='') => {
+    const mark = playerMark;
 
-console.log(tablero.getTablero());
+    const getMark = () => mark;
+    return {getMark};
+
+};
+
+
+
+
+
+
