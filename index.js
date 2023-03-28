@@ -9,16 +9,9 @@ const gameBoard = (() => {
   const getBoard = () => board;
   //Establece en el indice indicado la marca del jugador
   const setMark = (player, index) => (board[index] = player.getMark());
-  //Funcion que rellena el tablero 50-50 con las marcas de ambos jugadores
-  const setBoard = (player1, player2) => {
-    for (let i = 0; i < board.length; i++) {
-      Math.random() < 0.49
-        ? (board[i] = player1.getMark())
-        : (board[i] = player2.getMark());
-    }
-  };
+  
   //Devuelve el objeto con las funciones indicadas
-  return { getBoard, setMark, setBoard };
+  return { getBoard, setMark};
 })();
 
 const Player = (playerMark = "") => {
@@ -26,6 +19,15 @@ const Player = (playerMark = "") => {
   const getMark = () => mark;
   return { getMark };
 };
+
+const ScreenController = (() => {
+  const drawBoard = () => {
+    const board = document.querySelector("#board");
+    for(let i = 0; i < gameBoard.getBoard().length; i++){
+      
+    }
+  }
+})();
 
 function Game(playerOne = "X", playerTwo = "O") {
   //Se declaran los dos jugadores en un array
