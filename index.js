@@ -28,8 +28,12 @@ const ScreenController = (() => {
       const divCell = document.createElement("div");
       divCell.classList.add("cell");
       divCell.textContent = board[i];
+      divCell.setAttribute('data-index',i);
+      divCell.addEventListener('click',function(e){
+        console.log(e.target);
+      })
       divBoard.appendChild(divCell);
-      console.log(divBoard);
+      
     }
   };
   return { drawBoard };
