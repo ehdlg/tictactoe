@@ -9,9 +9,9 @@ const gameBoard = (() => {
   const getBoard = () => board;
   //Establece en el indice indicado la marca del jugador
   const setMark = (player, index) => (board[index] = player.getMark());
-  
+
   //Devuelve el objeto con las funciones indicadas
-  return { getBoard, setMark};
+  return { getBoard, setMark };
 })();
 
 const Player = (playerMark = "") => {
@@ -22,19 +22,24 @@ const Player = (playerMark = "") => {
 
 const ScreenController = (() => {
   const drawBoard = () => {
-    const board = document.querySelector("#board");
-    for(let i = 0; i < gameBoard.getBoard().length; i++){
-      
+    const divBoard = document.querySelector("#board");
+    const board = gameBoard.getBoard();
+    for (let i = 0; i < board.length; i++) {
+      const divCell = document.createElement("div");
+      divCell.classList.add("cell");
+      divCell.textContent = board[i];
+      divBoard.appendChild(divCell);
+      console.log(divBoard);
     }
-  }
+  };
+  return { drawBoard };
 })();
 
 function Game(playerOne = "X", playerTwo = "O") {
   //Se declaran los dos jugadores en un array
   const players = [Player(playerOne), Player(playerTwo)];
 
-  // gameBoard.setBoard(players[0], players[1]);
-  console.log(gameBoard.getBoard());
+  ScreenController.drawBoard();
 }
 
 Game();
