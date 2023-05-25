@@ -35,9 +35,11 @@ const gameBoard = (() => {
 })();
 //Factory function para los jugadores, devuevel un objeto con los parametros mark y name
 function Player(mark, name) {
+  let markedCells = [];
   return {
     mark,
     name,
+    markedCells
   };
 }
 //IIFE para el controlador del juego
@@ -52,6 +54,17 @@ const gameController = (() => {
   const switchPlayer = () => {
     activePlayer = (activePlayer + 1) % 2;
   };
+
+  const getMarkedCells = () => {
+    const playerMark = players[activePlayer].mark;
+    let markedCells = [];
+    for(let i = 0; i < board.length; i++){
+      if(board[i] === playerMark){
+        markedCells.push(i);
+      }
+    }
+    return markedCells;
+  };
   //Funcion que establece una ronda de juego
   const playRound = (cell) => {
     //Si la celda indicada está fuera del limite, se para la funcion
@@ -59,7 +72,7 @@ const gameController = (() => {
       console.log("The cell is off limits");
       return;
     }
-    //aslfjslaej
+
     //Si la celda no está vacía (ya está marcada), se para la funcion
     if (board[cell] !== "") {
       console.log("The cell is already marked");
@@ -67,8 +80,10 @@ const gameController = (() => {
     }
     //En caso de que no haya ningun error en la celda, se procede a establecer la marca del jugador en el tablero
     board[cell] = players[activePlayer].mark;
-    if(checkWinner()){
-
+    if (checkWin(activePlayer)) {
+      console.log('has ganado');
+    }else{
+      console.log('has perdido');
     }
     switchPlayer();
     console.log(printBoard());
@@ -90,10 +105,20 @@ const gameController = (() => {
     }
     return printedBoard;
   };
-  return { playRound, whichTurn };
+
+  return { playRound, whichTurn, getMarkedCells, players };
 })();
 
-function checkWinner() {
-  return true;
+function checkWin() {
+  let markedCells = gameController.getMarkedCells();
+
+  for (let i = 0; i < winningConditions.length; i++) {
+    const condition = winningConditions[i];
+    if (condition.every(cell => markedCells.includes(cell))) {
+      return true; // Se encontró una condición de victoria, se retorna true y se sale de la función
+    }
+  }
+
+  return false; // No se encontró ninguna condición de victoria, se retorna false al finalizar el bucle
 }
 console.log(gameController.whichTurn());
