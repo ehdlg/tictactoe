@@ -10,3 +10,20 @@ const gameBoard = (() => {
   
   return {getBoard, setMark}
 })();
+
+function Player(mark, name){
+  return {
+    mark,
+    name
+  }
+}
+
+const gameController = (() =>{
+  const players = [
+    Player('X', 'Player One'),
+    Player('O', 'Player Two')
+  ]
+  return {players}
+})()
+
+console.log(gameController.players);
