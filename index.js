@@ -19,10 +19,24 @@ function Player(mark, name){
 }
 
 const gameController = (() =>{
+  const board = gameBoard.getBoard();
   const players = [
     Player('X', 'Player One'),
     Player('O', 'Player Two')
   ]
+
+  let activePlayer = player[0];
+
+  const switchPlayer = () => {
+    activePlayer === players[0] ? players[1] : players[0];
+  }
+  const playRound = (cell) => {
+    if(board[cell] === ''){
+
+    }else{
+      console.log('The cell is already marked');
+    }
+  }
   return {players}
 })()
 
