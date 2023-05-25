@@ -1,49 +1,12 @@
 const gameBoard = (() => {
-  const length = 9;
   const board = [];
-  //Rellena el array con sring vacíos
-  for (let i = 0; i < length; i++) {
-    board[i] = "";
+  const length = 9;
+  for (let i = 0; i < length; i++){
+    board[i] = '';
   }
-  /**Devuelve el tablero */
+
   const getBoard = () => board;
-  //Establece en el indice indicado la marca del jugador
-  const setMark = (player, index) => (board[index] = player.getMark());
-
-  //Devuelve el objeto con las funciones indicadas
-  return { getBoard, setMark };
+  const setMark = (mark, index) => board[index] = mark;
+  
+  return {getBoard, setMark}
 })();
-
-const Player = (playerMark = "") => {
-  const mark = playerMark;
-  const getMark = () => mark;
-  return { getMark };
-};
-
-const ScreenController = (() => {
-  const drawBoard = () => {
-    const divBoard = document.querySelector("#board");
-    const board = gameBoard.getBoard();
-    for (let i = 0; i < board.length; i++) {
-      const divCell = document.createElement("div");
-      divCell.classList.add("cell");
-      divCell.textContent = board[i];
-      divCell.setAttribute('data-index',i);
-      divCell.addEventListener('click',function(e){
-        console.log(e.target);
-      })
-      divBoard.appendChild(divCell);
-      
-    }
-  };
-  return { drawBoard };
-})();
-
-function Game(playerOne = "X", playerTwo = "O") {
-  //Se declaran los dos jugadores en un array
-  const players = [Player(playerOne), Player(playerTwo)];
-
-  ScreenController.drawBoard();
-}
-
-Game();
