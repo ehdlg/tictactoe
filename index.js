@@ -42,6 +42,21 @@ function Player(mark, name) {
     markedCells,
   };
 }
+
+const screenController = (() => {
+  let divBoard = document.querySelector('#board');
+  const board = gameBoard.getBoard();
+  const printBoard = () => {
+    for (let i = 0; i < board.length; i++){
+      let divCell = document.createElement('div');
+      divCell.classList.add('cell');
+      divBoard.appendChild(divCell);
+    }
+  }
+  return{
+    printBoard
+  }
+})();
 //IIFE para el controlador del juego
 const gameController = (() => {
   //Variable que contiene el tablero de gameBoard
@@ -106,33 +121,21 @@ const gameController = (() => {
   const whichTurn = () => {
     return `It's ${players[activePlayer].name}'s turn.`;
   };
-  const printBoard = () => {
-    if (!gameFinished) {
-      console.log(whichTurn());
-    }
-    let printedBoard = "";
-
-    for (let i = 0; i < board.length; i++) {
-      if (i % 3 === 0) {
-        printedBoard += "\n";
-      }
-      printedBoard += ` [${board[i]}] `;
-    }
-    return printedBoard;
-  };
 
   return { playRound, whichTurn, getMarkedCells, players };
 })();
-
+//Fucnion que comprueba si el jugador activo ha ganado la partida
 function checkWin() {
+  //Se obtienen las celdas marcadas del jugador
   let markedCells = gameController.getMarkedCells();
-
+  //Se recorren las condiciones de victoriay se comprueba con every() que los indices (celda) de condicion de vicotria se encuentran en las celdas marcadas
   for (let i = 0; i < winningConditions.length; i++) {
     const condition = winningConditions[i];
     if (condition.every((cell) => markedCells.includes(cell))) {
       return true; // Se encontró una condición de victoria, se retorna true y se sale de la función
     }
   }
-
   return false; // No se encontró ninguna condición de victoria, se retorna false al finalizar el bucle
 }
+
+screenController.printBoard()
