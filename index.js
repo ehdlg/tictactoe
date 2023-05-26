@@ -39,7 +39,7 @@ function Player(mark, name) {
   return {
     mark,
     name,
-    markedCells
+    markedCells,
   };
 }
 //IIFE para el controlador del juego
@@ -50,20 +50,22 @@ const gameController = (() => {
   const players = [Player("X", "Player One"), Player("O", "Player Two")];
   //Turno del jugador, por defecto jugador uno (indice 0)
   let activePlayer = 0;
+  let gameFinished = false;
+
   //Funcion que dependiendo del activePlayer, cambia de turno al sumar por 1 y hacer el modulo
   const switchPlayer = () => {
     activePlayer = (activePlayer + 1) % 2;
   };
 
   const isDraw = () => {
-    return board.filter(cell => cell === 'X' || cell === 'O').length === 8;
-  }
+    return board.filter((cell) => cell === "X" || cell === "O").length === 8;
+  };
 
   const getMarkedCells = () => {
     const playerMark = players[activePlayer].mark;
     let markedCells = [];
-    for(let i = 0; i < board.length; i++){
-      if(board[i] === playerMark){
+    for (let i = 0; i < board.length; i++) {
+      if (board[i] === playerMark) {
         markedCells.push(i);
       }
     }
@@ -72,6 +74,10 @@ const gameController = (() => {
   //Funcion que establece una ronda de juego
   const playRound = (cell) => {
     //Si la celda indicada está fuera del limite, se para la funcion
+    if(gameFinished){
+      console.log('The game has already finished, please restart the game');
+      return;
+    }
     if (cell > board.length - 1 || cell < 0) {
       console.log("The cell is off limits");
       return;
@@ -85,11 +91,14 @@ const gameController = (() => {
     //En caso de que no haya ningun error en la celda, se procede a establecer la marca del jugador en el tablero
     board[cell] = players[activePlayer].mark;
     if (checkWin(activePlayer)) {
-      console.log('has ganado');
-    }else{
-      console.log('has perdido');
+      console.log(`${players[activePlayer].name} wins!`);
+      gameFinished = true;
+    } else if (isDraw()) {
+      console.log("Draw!");
+      gameFinished = true;
+    } else {
+      switchPlayer();
     }
-    switchPlayer();
     console.log(printBoard());
     return;
   };
@@ -98,7 +107,9 @@ const gameController = (() => {
     return `It's ${players[activePlayer].name}'s turn.`;
   };
   const printBoard = () => {
-    console.log(whichTurn());
+    if (!gameFinished) {
+      console.log(whichTurn());
+    }
     let printedBoard = "";
 
     for (let i = 0; i < board.length; i++) {
@@ -118,12 +129,10 @@ function checkWin() {
 
   for (let i = 0; i < winningConditions.length; i++) {
     const condition = winningConditions[i];
-    if (condition.every(cell => markedCells.includes(cell))) {
+    if (condition.every((cell) => markedCells.includes(cell))) {
       return true; // Se encontró una condición de victoria, se retorna true y se sale de la función
     }
   }
 
   return false; // No se encontró ninguna condición de victoria, se retorna false al finalizar el bucle
 }
-
-
