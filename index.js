@@ -44,18 +44,33 @@ function Player(mark, name) {
 }
 
 const screenController = (() => {
-  let divBoard = document.querySelector('#board');
+  let divBoard = document.querySelector("#board");
   const board = gameBoard.getBoard();
   const printBoard = () => {
-    for (let i = 0; i < board.length; i++){
-      let divCell = document.createElement('div');
-      divCell.classList.add('cell');
+    while (divBoard.hasChildNodes()) {
+      divBoard.removeChild(divBoard.firstChild);
+    }
+    for (let i = 0; i < board.length; i++) {
+      let divCell = document.createElement("div");
+      divCell.classList.add("cell");
+      divCell.dataset.cell = i;
+      divCell.textContent = board[i];
+      divCell.addEventListener("click", handleClickCell.bind(this));
       divBoard.appendChild(divCell);
     }
-  }
-  return{
-    printBoard
-  }
+    console.log(board);
+  };
+
+  const handleClickCell = (event) => {
+    if (!gameController.gameFinished) {
+      const cellElement = event.target;
+      gameController.playRound(cellElement.dataset.cell);
+      
+    }
+  };
+  return {
+    printBoard,
+  };
 })();
 //IIFE para el controlador del juego
 const gameController = (() => {
@@ -64,12 +79,11 @@ const gameController = (() => {
   //Array con los dos objetos jugadores
   const players = [Player("X", "Player One"), Player("O", "Player Two")];
   //Turno del jugador, por defecto jugador uno (indice 0)
-  let activePlayer = 0;
+  let indexActivePlayer = 0;
   let gameFinished = false;
-
   //Funcion que dependiendo del activePlayer, cambia de turno al sumar por 1 y hacer el modulo
   const switchPlayer = () => {
-    activePlayer = (activePlayer + 1) % 2;
+    indexActivePlayer = (indexActivePlayer + 1) % 2;
   };
 
   const isDraw = () => {
@@ -77,7 +91,7 @@ const gameController = (() => {
   };
 
   const getMarkedCells = () => {
-    const playerMark = players[activePlayer].mark;
+    const playerMark = players[indexActivePlayer].mark;
     let markedCells = [];
     for (let i = 0; i < board.length; i++) {
       if (board[i] === playerMark) {
@@ -89,8 +103,8 @@ const gameController = (() => {
   //Funcion que establece una ronda de juego
   const playRound = (cell) => {
     //Si la celda indicada está fuera del limite, se para la funcion
-    if(gameFinished){
-      console.log('The game has already finished, please restart the game');
+    if (gameFinished) {
+      console.log("The game has already finished, please restart the game");
       return;
     }
     if (cell > board.length - 1 || cell < 0) {
@@ -104,9 +118,9 @@ const gameController = (() => {
       return;
     }
     //En caso de que no haya ningun error en la celda, se procede a establecer la marca del jugador en el tablero
-    board[cell] = players[activePlayer].mark;
-    if (checkWin(activePlayer)) {
-      console.log(`${players[activePlayer].name} wins!`);
+    board[cell] = players[indexActivePlayer].mark;
+    if (checkWin(indexActivePlayer)) {
+      console.log(`${players[indexActivePlayer].name} wins!`);
       gameFinished = true;
     } else if (isDraw()) {
       console.log("Draw!");
@@ -114,15 +128,15 @@ const gameController = (() => {
     } else {
       switchPlayer();
     }
-    console.log(printBoard());
+    screenController.printBoard();
     return;
   };
 
   const whichTurn = () => {
-    return `It's ${players[activePlayer].name}'s turn.`;
+    return `It's ${players[indexActivePlayer].name}'s turn.`;
   };
 
-  return { playRound, whichTurn, getMarkedCells, players };
+  return { playRound, whichTurn, getMarkedCells, playRound, gameFinished };
 })();
 //Fucnion que comprueba si el jugador activo ha ganado la partida
 function checkWin() {
@@ -138,4 +152,4 @@ function checkWin() {
   return false; // No se encontró ninguna condición de victoria, se retorna false al finalizar el bucle
 }
 
-screenController.printBoard()
+screenController.printBoard();
