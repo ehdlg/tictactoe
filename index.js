@@ -55,6 +55,10 @@ const gameController = (() => {
     activePlayer = (activePlayer + 1) % 2;
   };
 
+  const isDraw = () => {
+    return board.filter(cell => cell === 'X' || cell === 'O').length === 8;
+  }
+
   const getMarkedCells = () => {
     const playerMark = players[activePlayer].mark;
     let markedCells = [];
@@ -123,4 +127,3 @@ function checkWin() {
 }
 
 
-console.log(gameController.whichTurn());
