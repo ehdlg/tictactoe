@@ -121,4 +121,6 @@ function checkWin() {
 
   return false; // No se encontró ninguna condición de victoria, se retorna false al finalizar el bucle
 }
+
+
 console.log(gameController.whichTurn());
