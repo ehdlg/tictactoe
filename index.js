@@ -19,7 +19,7 @@ const gameBoard = (() => {
   //Funcion que establece las celda]]]s del tablero como string vacíos
   const setBoard = () => {
     for (let i = 0; i < length; i++) {
-      board[i] = "";
+      board[i] = '';
     }
   };
   //Se llama a la función setBoard para establecer el tablero
@@ -44,18 +44,18 @@ function Player(mark, name) {
 }
 
 const screenController = (() => {
-  let divBoard = document.querySelector("#board");
+  let divBoard = document.querySelector('#board');
   const board = gameBoard.getBoard();
   const printBoard = () => {
     while (divBoard.hasChildNodes()) {
       divBoard.removeChild(divBoard.firstChild);
     }
     for (let i = 0; i < board.length; i++) {
-      let divCell = document.createElement("div");
-      divCell.classList.add("cell");
+      let divCell = document.createElement('div');
+      divCell.classList.add('cell');
       divCell.dataset.cell = i;
       divCell.textContent = board[i];
-      divCell.addEventListener("click", handleClickCell.bind(this));
+      divCell.addEventListener('click', handleClickCell.bind(this));
       divBoard.appendChild(divCell);
     }
   };
@@ -75,7 +75,7 @@ const gameController = (() => {
   //Variable que contiene el tablero de gameBoard
   const board = gameBoard.getBoard();
   //Array con los dos objetos jugadores
-  const players = [Player("X", "Player One"), Player("O", "Player Two")];
+  const players = [Player('X', 'Player One'), Player('O', 'Player Two')];
   //Turno del jugador, por defecto jugador uno (indice 0)
   let indexActivePlayer = 0;
   let gameFinished = false;
@@ -85,7 +85,7 @@ const gameController = (() => {
   };
 
   const isDraw = () => {
-    return board.filter((cell) => cell === "X" || cell === "O").length === 8;
+    return board.filter((cell) => cell === 'X' || cell === 'O').length === 8;
   };
 
   const getMarkedCells = () => {
@@ -102,17 +102,17 @@ const gameController = (() => {
   const playRound = (cell) => {
     //Si la celda indicada está fuera del limite, se para la funcion
     if (gameFinished) {
-      console.log("The game has already finished, please restart the game");
+      console.log('The game has already finished, please restart the game');
       return;
     }
     if (cell > board.length - 1 || cell < 0) {
-      console.log("The cell is off limits");
+      console.log('The cell is off limits');
       return;
     }
 
     //Si la celda no está vacía (ya está marcada), se para la funcion
-    if (board[cell] !== "") {
-      console.log("The cell is already marked");
+    if (board[cell] !== '') {
+      console.log('The cell is already marked');
       return;
     }
     //En caso de que no haya ningun error en la celda, se procede a establecer la marca del jugador en el tablero
@@ -121,7 +121,7 @@ const gameController = (() => {
       console.log(`${players[indexActivePlayer].name} wins!`);
       gameFinished = true;
     } else if (isDraw()) {
-      console.log("Draw!");
+      console.log('Draw!');
       gameFinished = true;
     } else {
       switchPlayer();
