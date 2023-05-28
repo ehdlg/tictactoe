@@ -16,7 +16,7 @@ const gameBoard = (() => {
   const board = [];
   //Longitud del tablero
   const length = 9;
-  //Funcion que establece las celdas del tablero como string vacíos
+  //Funcion que establece las celda]]]s del tablero como string vacíos
   const setBoard = () => {
     for (let i = 0; i < length; i++) {
       board[i] = "";
@@ -58,14 +58,12 @@ const screenController = (() => {
       divCell.addEventListener("click", handleClickCell.bind(this));
       divBoard.appendChild(divCell);
     }
-    console.log(board);
   };
 
   const handleClickCell = (event) => {
     if (!gameController.gameFinished) {
       const cellElement = event.target;
       gameController.playRound(cellElement.dataset.cell);
-      
     }
   };
   return {
